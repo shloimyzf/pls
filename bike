@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: sans-serif;
+    background: #f0f2f5;
+  }
+  .container {
+    text-align: center;
+    padding: 2rem;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  }
+  h1 {
+    font-size: 3rem;
+    color: #333;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+  }
+  h1:hover {
+    transform: scale(1.2);
+    color: #007bff;
+  }
+  p {
+    color: #666;
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1 onclick="this.style.fontSize='5rem'">ENLARGE</h1>
+  <p>I'm waiting for a bike...</p>
+</div>
+
+</body>
+</html>
