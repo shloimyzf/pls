@@ -1,45 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
   body {
+    margin: 0;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 200vh;
-    margin: 0;
+    background: #000;
     font-family: sans-serif;
-    background: #f0f2f5;
   }
-  .container {
+  .bike-box {
     text-align: center;
-    padding: 2rem;
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    animation: flash 1s infinite alternate;
   }
   h1 {
     font-size: 4rem;
-    color: #333;
-    transition: transform 0.3s ease;
-    cursor: pointer;
+    color: #ff0000;
+    text-transform: uppercase;
+    margin: 0;
+    line-height: 1;
   }
-  h1:hover {
-    flash
-    transform: scale(1.2);
-    color: #007bff;
-  }
-  p {
-    color: #666;
-    margin-top: 10px;
+  @keyframes flash {
+    from { opacity: 1; transform: scale(1); }
+    to { opacity: 0.3; transform: scale(1.1); }
   }
 </style>
 </head>
 <body>
 
-<div class="container">
-  <h1 onclick="this.style.fontSize='5rem'">my bike?</h1>
-  <p>I'm waiting for a bike...</p>
+<div class="bike-box">
+  <h1>WHERE'S<br>MY BIKE?</h1>
 </div>
 
 </body>
