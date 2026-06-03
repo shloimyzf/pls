@@ -1,39 +1,167 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-  body {
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #000;
-    font-family: sans-serif;
-  }
-  .bike-box {
-    text-align: center;
-    animation: flash 1s infinite alternate;
-  }
-  h1 {
-    font-size: 4rem;
-    color: #ff0000;
-    text-transform: uppercase;
-    margin: 0;
-    line-height: 1;
-  }
-  @keyframes flash {
-    from { opacity: 1; transform: scale(1); }
-    to { opacity: 0.3; transform: scale(1.1); }
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hey! Check this out</title>
+    <style>
+        /* Modern dark mode reset */
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #0f172a, #1e1b4b, #311042);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #fff;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Animated shifting background */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating glass effect card */
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 
+                        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transform: translateY(0px);
+            animation: float 5s ease-in-out infinite;
+            max-width: 420px;
+            width: 85%;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(0.5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        /* Glowing text effect */
+        h1 {
+            font-size: 2.3rem;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #38bdf8, #a855f7, #f43f5e);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 4s linear infinite;
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        p {
+            color: #cbd5e1;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        /* Interactive pulse button */
+        .btn {
+            background: linear-gradient(45deg, #a855f7, #f43f5e);
+            border: none;
+            color: white;
+            padding: 14px 32px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            outline: none;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(244, 63, 94, 0.6);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Particle explosion styles */
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            animation: explode 0.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+            font-size: 1.8rem;
+            z-index: 9999;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: translate(-50%, -50%) scale(0.5);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1.2);
+                opacity: 0;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<div class="bike-box">
-  <h1>WHERE'S<br>MY BIKE?</h1>
-</div>
+    <div class="card">
+        <h1>Told you I build websites. 😉</h1>
+        <p>Just a quick custom page to show you what's possible with a little bit of code.</p>
+        <button class="btn" onclick="pop(event)">Click for Magic</button>
+    </div>
+
+    <script>
+        function pop(e) {
+            const emojis = ['✨', '💻', '🚀', '🔥', '🎨', '⚡', '👑', '✌️'];
+            const count = 25; // number of particles
+            
+            // Fallback to center of button if triggered by keyboard
+            const xCoord = e.clientX || e.target.getBoundingClientRect().left + e.target.offsetWidth / 2;
+            const yCoord = e.clientY || e.target.getBoundingClientRect().top + e.target.offsetHeight / 2;
+
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                
+                // Calculate random trajectory radius
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = 50 + Math.random() * 150;
+                const x = Math.cos(angle) * velocity;
+                const y = Math.sin(angle) * velocity;
+                
+                particle.style.setProperty('--x', `${x}px`);
+                particle.style.setProperty('--y', `${y}px`);
+                
+                particle.style.left = `${xCoord}px`;
+                particle.style.top = `${yCoord}px`;
+                
+                document.body.appendChild(particle);
+                
+                // Remove elements after animation ends
+                setTimeout(() => {
+                    particle.remove();
+                }, 800);
+            }
+        }
+    </script>
 
 </body>
 </html>
