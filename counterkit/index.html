@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CounterKit — The House Tab, Perfected</title>
+<meta name="description" content="CounterKit is a private ordering page and house-tab ledger for independent cafés, bakeries, delis, and boutique counters. One purchase — no subscription, no commission.">
+<style>
+  :root{
+    --ink:#141210; --paper:#faf7f2; --card:#ffffff; --gold:#a07c2c; --gold-soft:#c9a44a;
+    --muted:#5c554c; --line:#e5ded2; --dark:#17140f; --dark2:#221d15;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:Georgia,'Times New Roman',serif;background:var(--paper);color:var(--ink);line-height:1.6}
+  .sans{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif}
+  a{color:var(--gold)}
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px}
+  header.top{border-bottom:1px solid var(--line);padding:18px 0}
+  .brand{font-size:20px;letter-spacing:.14em;text-transform:uppercase}
+  .brand b{color:var(--gold)}
+  .hero{padding:72px 0 56px;text-align:center}
+  .hero .kicker{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+  .hero h1{font-size:52px;line-height:1.12;margin:0 0 22px;font-weight:500}
+  .hero p.lede{font-size:19px;color:var(--muted);max-width:680px;margin:0 auto 34px}
+  .cta{display:inline-block;background:var(--dark);color:#f5efe3;text-decoration:none;padding:15px 34px;border-radius:3px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:15px;letter-spacing:.06em}
+  .cta:hover{background:var(--dark2)}
+  .cta.gold{background:var(--gold);color:#fff}
+  .cta.gold:hover{background:var(--gold-soft)}
+  section{padding:52px 0;border-top:1px solid var(--line)}
+  h2{font-size:32px;font-weight:500;margin:0 0 18px;line-height:1.25}
+  h3{font-size:20px;font-weight:600;margin:26px 0 8px}
+  p{margin:0 0 14px}
+  .muted{color:var(--muted)}
+  ul{margin:0 0 14px;padding-left:20px}
+  li{margin-bottom:7px}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:26px}
+  .step{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:22px}
+  .step .n{font-size:30px;color:var(--gold);line-height:1}
+  .step h4{margin:10px 0 6px;font-size:17px}
+  .step p{font-size:15px;color:var(--muted);margin:0}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:26px}
+  .price-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:26px}
+  .price{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:32px 28px;position:relative}
+  .price.featured{border:2px solid var(--gold)}
+  .price .tier{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+  .price .amount{font-size:46px;margin:10px 0 2px}
+  .price .once{color:var(--muted);font-size:14px;margin-bottom:16px}
+  .price ul{font-size:15px}
+  .ratebar{background:var(--dark);color:#efe8d8;border-radius:8px;padding:20px 24px;margin-top:26px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:14px;display:flex;flex-wrap:wrap;gap:8px 28px;align-items:center}
+  .ratebar b{color:var(--gold-soft)}
+  .ordersteps{counter-reset:os;margin-top:22px}
+  .ordersteps .os{display:flex;gap:18px;margin-bottom:20px}
+  .ordersteps .os .n{flex:0 0 42px;height:42px;border-radius:50%;background:var(--gold);color:#fff;display:flex;align-items:center;justify-content:center;font-size:19px}
+  .ordersteps h4{margin:6px 0 4px;font-size:18px}
+  .ordersteps p{color:var(--muted);font-size:15px}
+  .addr{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;background:#f1ebdf;border:1px solid var(--line);border-radius:4px;padding:3px 8px;word-break:break-all}
+  .guarantee{background:var(--dark);color:#f0e9da;border-radius:8px;padding:36px}
+  .guarantee h2{color:#fff}
+  .guarantee p{color:#cfc6b2}
+  details{border-bottom:1px solid var(--line);padding:14px 0}
+  summary{cursor:pointer;font-size:17px;font-weight:600}
+  details p{color:var(--muted);margin-top:8px;font-size:15px}
+  footer{padding:44px 0 60px;border-top:1px solid var(--line);color:var(--muted);font-size:14px;text-align:center}
+  @media (max-width:720px){.steps,.grid2,.price-grid{grid-template-columns:1fr}.hero h1{font-size:38px}}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="wrap"><div class="brand">Counter<b>Kit</b></div></div></header>
+
+<div class="hero"><div class="wrap">
+  <div class="kicker">For independent counters</div>
+  <h1>The house tab, perfected.</h1>
+  <p class="lede">CounterKit is a private ordering page and house-tab ledger for independent counters — cafés, bakeries, delis, and boutique food counters whose regulars order by name. Your menu, live on the web. Orders in a real-time queue. Every tab kept to the cent, in a ledger that never loses a page. Live in about fifteen minutes. Yours outright — no subscription, no commission, no middleman.</p>
+  <a class="cta gold" href="#order">Get CounterKit — from $149</a>
+</div></div>
+
+<section><div class="wrap">
+  <h2>The problem with the notebook</h2>
+  <p>Every beloved counter runs on the same invisible system: memory.</p>
+  <ul>
+    <li>Orders arrive by shout, by text, by “my usual, please.”</li>
+    <li>Regulars run house tabs — kept in a notebook, a notes app, or somebody’s head.</li>
+    <li>At month’s end the numbers don’t reconcile. A regular swears they settled. Another forgot entirely. You absorb the difference, because a relationship is worth more than the discrepancy.</li>
+    <li>The platform alternative? A monthly fee, a percentage of every sale, proprietary hardware, and an onboarding call — enterprise machinery pointed at a twelve-seat café.</li>
+  </ul>
+  <p>Your counter doesn’t need enterprise software. It needs discretion, accuracy, and polish: your menu, your queue, and a tab book with a perfect memory.</p>
+</div></section>
+
+<section><div class="wrap">
+  <h2>The system</h2>
+  <p class="muted">A complete, self-hosted ordering and house-tab system, refined to a single elegant packet.</p>
+  <div class="steps">
+    <div class="step"><div class="n">1</div><h4>Guests order simply</h4><p>Your guests order from a beautifully simple web page — your menu, your add-ons, their name, done. They receive a confirmation and an order number. Nothing to install, no account, no password.</p></div>
+    <div class="step"><div class="n">2</div><h4>Tabs keep themselves</h4><p>They may place it on their house tab. One tap. The charge enters their ledger automatically — precise to the cent, timestamped, permanent.</p></div>
+    <div class="step"><div class="n">3</div><h4>You conduct the counter</h4><p>One private admin page — orders appear the instant they’re placed; a single tap marks them fulfilled. Balances, lifetime totals, and full payment histories are always one glance away.</p></div>
+  </div>
+  <p style="margin-top:22px">And it is <em>yours</em>. Your Firebase project, your data, your domain. No subscription to renew, no per-order commission, no platform that can raise its prices on you next quarter — or hold your customer relationships hostage if you ever leave.</p>
+</div></section>
+
+<section><div class="wrap">
+  <h2>What’s inside</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3 style="margin-top:0">The ordering page</h3>
+      <ul>
+        <li>Refined menu grid by category, with per-item add-ons</li>
+        <li>Cart with quantities, order notes, and a running total</li>
+        <li>House tab or pay-at-pickup — your guest chooses</li>
+        <li>Instant confirmation with an order number</li>
+        <li>Runs in any phone browser — nothing to install</li>
+      </ul>
+      <h3>The counter admin</h3>
+      <ul>
+        <li><b>Live order queue</b> — orders surface in real time; mark fulfilled or cancelled with a tap</li>
+        <li><b>House tabs &amp; ledger</b> — balances to the cent, lifetime charged and settled per guest, complete history, partial settlements</li>
+        <li><b>Menu editor</b> — changes are live instantly; nothing to redeploy</li>
+        <li><b>At-a-glance vitals</b> — open orders, orders today, revenue today, outstanding tabs</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">The engine room</h3>
+      <ul>
+        <li>Firebase backend (Firestore) with a ready-to-publish security-rules file — guests can never lower a balance or see another guest’s tab</li>
+        <li>All money in integer cents — no floating-point drift, ever</li>
+        <li><b>Demo mode included</b> — experience the entire system with sample data before you connect a thing</li>
+        <li>A fifteen-minute setup guide, click by click</li>
+        <li>Plain HTML/CSS/JS — no build step, no framework; any developer or AI coding tool can extend it</li>
+      </ul>
+      <h3>Made for</h3>
+      <ul>
+        <li>☕ Independent cafés and espresso bars with a loyal morning crowd</li>
+        <li>🥐 Bakeries, delis, and juice bars that run house accounts</li>
+        <li>🚚 Food trucks and upscale pop-ups building a following</li>
+        <li>🏫 Members’ counters, program canteens, and school shops</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<section id="pricing"><div class="wrap">
+  <h2>Pricing — one purchase, forever</h2>
+  <p class="muted">No monthly fee. No percentage of sales. Firebase’s complimentary tier comfortably covers a typical counter.</p>
+  <div class="price-grid">
+    <div class="price">
+      <div class="tier">Single-Business</div>
+      <div class="amount">$149</div>
+      <div class="once">one-time</div>
+      <ul>
+        <li>The complete CounterKit v1 packet</li>
+        <li>For <b>one business at one location</b></li>
+        <li>30 days of setup assistance by email</li>
+        <li>v1.x refinements and bug-fix updates for 12 months</li>
+      </ul>
+      <a class="cta" href="#order">Order Single-Business</a>
+    </div>
+    <div class="price featured">
+      <div class="tier">Multi-Location</div>
+      <div class="amount">$349</div>
+      <div class="once">one-time</div>
+      <ul>
+        <li>Everything in Single-Business</li>
+        <li>For <b>one business at up to 5 locations</b></li>
+        <li>Priority setup assistance by email</li>
+        <li>v1.x refinements and bug-fix updates for 12 months</li>
+      </ul>
+      <a class="cta gold" href="#order">Order Multi-Location</a>
+    </div>
+  </div>
+  <p class="muted" style="margin-top:18px"><em>Consider: a single month on most ordering platforms costs more than CounterKit costs forever — and they take their percentage of every order, indefinitely.</em></p>
+  <div class="ratebar">
+    <span>Live Bitcoin rate: <b id="btc-rate">loading…</b></span>
+    <span>Single-Business ≈ <b id="btc-149">—</b></span>
+    <span>Multi-Location ≈ <b id="btc-349">—</b></span>
+    <span class="muted" style="color:#9a8f7a">Estimates only — your exact amount arrives by email.</span>
+  </div>
+</div></section>
+
+<section id="order"><div class="wrap">
+  <h2>How to order</h2>
+  <p class="muted">CounterKit is sold directly, and payment is by Bitcoin — no accounts, no checkout cart, no platform in the middle. Orders are handled personally, by email, in three steps:</p>
+  <div class="ordersteps">
+    <div class="os"><div class="n">1</div><div>
+      <h4>Email us the tier you want</h4>
+      <p>Write to <span class="addr">shloimyf33107+counterkit@gmail.com</span> and say which tier — <b>Single-Business ($149)</b> or <b>Multi-Location ($349)</b>. <a href="mailto:shloimyf33107+counterkit@gmail.com?subject=CounterKit%20order">Start your order email →</a></p>
+    </div></div>
+    <div class="os"><div class="n">2</div><div>
+      <h4>Receive your exact amount</h4>
+      <p>You’ll receive a reply with your exact BTC amount — calculated at the live rate, unique to your order — and the payment address. Please send exactly that amount; it’s how your payment is matched to your order.</p>
+    </div></div>
+    <div class="os"><div class="n">3</div><div>
+      <h4>Send, confirm, download</h4>
+      <p>Send that exact amount; when it confirms on-chain, your download (CounterKit-v1.zip) arrives by email, with setup guidance. Start with the 60-second demo, then follow the 15-minute setup.</p>
+    </div></div>
+  </div>
+  <p class="muted">Replies are typically sent within a few hours. Your quoted amount is held for 24 hours from the reply.</p>
+</div></section>
+
+<section><div class="wrap">
+  <div class="guarantee">
+    <h2>The 14-Day “Running Counter” Guarantee</h2>
+    <p>Set CounterKit up within fourteen days of purchase. If it does not run your counter’s ordering and house tabs exactly as described — and we cannot make it right by email — write to us and we will refund you in full. No forms, no exit interview, no hard feelings.</p>
+    <p>You risk nothing but fifteen minutes of setup. Your notebook has already cost you more.</p>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Questions</h2>
+  <details><summary>Do I need to know how to code?</summary><p>No. Setup is five quiet steps: create a free Firebase project, paste six configuration values into one file, publish the rules file, create your admin login, and upload the folder to any static host. The README accompanies you click-by-click, in about fifteen minutes. If you can run the demo, you can complete the setup.</p></details>
+  <details><summary>What does it cost to run each month?</summary><p>Nothing, for most counters. CounterKit carries no subscription; hosting is complimentary on Firebase Hosting, Netlify, and their peers, and Firestore’s free Spark plan absorbs a small counter’s volume with room to spare.</p></details>
+  <details><summary>How do house tabs work without guest accounts?</summary><p>By name — the way your counter already works. A tab is keyed to the name a guest orders under; the ledger records every charge and settlement beneath it. Ask regulars to use one consistent spelling.</p></details>
+  <details><summary>Can guests pay online?</summary><p>Not in v1 — by design. The model is the house tab or pay-at-the-counter, which is how counters built on regulars genuinely operate. The code is plain and documented, ready for a developer to extend later.</p></details>
+  <details><summary>Can I change the menu, prices, and look?</summary><p>Menu and prices: yes — live, from the admin page, with nothing to redeploy. The look and wording: yes — one CSS file with the palette at the top, and your business name and tab policy in one configuration file.</p></details>
+  <details><summary>Is my data mine?</summary><p>Entirely. Everything resides in your Firebase project under your Google account. We never see your guests, your orders, or your tabs.</p></details>
+  <details><summary>What do I need to run it?</summary><p>A free Google account (for Firebase) and somewhere to host static files — Firebase Hosting, Netlify, Vercel, and GitHub Pages all offer complimentary tiers.</p></details>
+  <details><summary>How do I pay, and when do I get my download?</summary><p>Payment is by Bitcoin, arranged personally by email (see “How to order” above). Email the tier you want; you’ll receive a reply with your exact BTC amount at the live rate and the payment address. Send exactly that amount — once it confirms on-chain, the download is emailed to you. Because each order is matched by its unique amount, there is no instant checkout; replies are typically sent within a few hours.</p></details>
+  <details><summary>What is the refund policy?</summary><p>The 14-Day “Running Counter” Guarantee above. Refunds are issued in Bitcoin to the address you paid from.</p></details>
+</div></section>
+
+<footer><div class="wrap">
+  <p>CounterKit — your regulars already order by name. Give their loyalty a ledger worthy of it.</p>
+  <p>Orders &amp; support: shloimyf33107+counterkit@gmail.com</p>
+</div></footer>
+
+<script>
+(function(){
+  function fmt(n){return n.toFixed(8).replace(/0+$/,'').replace(/\.$/,'');}
+  fetch('https://mempool.space/api/v1/prices')
+    .then(function(r){return r.json();})
+    .then(function(d){
+      var usd = d.USD;
+      if(!usd) throw new Error('no rate');
+      document.getElementById('btc-rate').textContent = '$' + usd.toLocaleString('en-US');
+      document.getElementById('btc-149').textContent = fmt(149/usd) + ' BTC';
+      document.getElementById('btc-349').textContent = fmt(349/usd) + ' BTC';
+    })
+    .catch(function(){
+      document.getElementById('btc-rate').textContent = 'unavailable right now';
+    });
+})();
+</script>
+</body>
+</html>
