@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LaunchGuard — Firebase Launch &amp; Security Kit for AI-Built Apps</title>
+<meta name="description" content="LaunchGuard is the launch-safety packet for Firebase apps built with AI tools: production Firestore rules for 4 app archetypes, launch + security-audit checklists, the 12 AI-builder holes and their fixes, and a rules unit-test starter. One purchase — $79.">
+<link rel="canonical" href="https://shloimyzf.github.io/pls/counterkit/launchguard/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="LaunchGuard">
+<meta property="og:title" content="LaunchGuard — Your AI built the app. Now make it safe to ship.">
+<meta property="og:description" content="Production Firestore rules, launch checklists, and rules tests for Firebase apps built with AI Studio, Bolt, Lovable, or Cursor. One purchase — $79.">
+<meta property="og:url" content="https://shloimyzf.github.io/pls/counterkit/launchguard/">
+<meta property="og:image" content="https://shloimyzf.github.io/pls/counterkit/launchguard/assets/og-image.svg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://shloimyzf.github.io/pls/counterkit/launchguard/assets/og-image.svg">
+<style>
+  :root{--ink:#101511;--paper:#f4f6f3;--card:#ffffff;--acc:#2e7d4f;--acc-soft:#3fa46a;--muted:#55645a;--line:#dce3dc;--dark:#0d1410;--dark2:#16211a;--bad:#b3402e}
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;font-family:Georgia,'Times New Roman',serif;background:var(--paper);color:var(--ink);line-height:1.6}
+  .sans{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif}
+  .mono{font-family:ui-monospace,Menlo,Consolas,monospace}
+  a{color:var(--acc)} .wrap{max-width:920px;margin:0 auto;padding:0 22px}
+  header.top{border-bottom:1px solid var(--line);padding:18px 0}
+  .brand{font-size:20px;letter-spacing:.14em;text-transform:uppercase}.brand b{color:var(--acc)}
+  .hero{padding:72px 0 56px;text-align:center}
+  .hero .kicker{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--acc);margin-bottom:18px}
+  .hero h1{font-size:48px;line-height:1.15;margin:0 0 22px;font-weight:500}
+  .hero p.lede{font-size:19px;color:var(--muted);max-width:700px;margin:0 auto 34px}
+  .cta{display:inline-block;background:var(--dark);color:#eef3ee;text-decoration:none;padding:15px 34px;border-radius:3px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:15px;letter-spacing:.06em}
+  .cta:hover{background:var(--dark2)} .cta.acc{background:var(--acc);color:#fff}.cta.acc:hover{background:var(--acc-soft)}
+  section{padding:52px 0;border-top:1px solid var(--line)}
+  h2{font-size:32px;font-weight:500;margin:0 0 18px;line-height:1.25} h3{font-size:20px;font-weight:600;margin:26px 0 8px}
+  p{margin:0 0 14px}.muted{color:var(--muted)} ul{margin:0 0 14px;padding-left:20px} li{margin-bottom:7px}
+  .codebox{background:var(--dark);color:#d7e2d8;border-radius:8px;padding:24px 28px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14.5px;line-height:1.7;overflow-x:auto}
+  .codebox .bad{color:#e08a7a}.codebox .cm{color:#7d8f80}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:26px}
+  .price-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:26px}
+  .price{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:32px 28px}
+  .price.featured{border:2px solid var(--acc)}
+  .price .tier{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--acc)}
+  .price .amount{font-size:46px;margin:10px 0 2px}.price .once{color:var(--muted);font-size:14px;margin-bottom:16px}.price ul{font-size:15px}
+  .ratebar{background:var(--dark);color:#e3eadf;border-radius:8px;padding:20px 24px;margin-top:26px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:14px;display:flex;flex-wrap:wrap;gap:8px 28px;align-items:center}
+  .ratebar b{color:var(--acc-soft)}
+  .ordersteps{margin-top:22px}.ordersteps .os{display:flex;gap:18px;margin-bottom:20px}
+  .ordersteps .os .n{flex:0 0 42px;height:42px;border-radius:50%;background:var(--acc);color:#fff;display:flex;align-items:center;justify-content:center;font-size:19px}
+  .ordersteps h4{margin:6px 0 4px;font-size:18px}.ordersteps p{color:var(--muted);font-size:15px}
+  .addr{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;background:#e9efe9;border:1px solid var(--line);border-radius:4px;padding:3px 8px;word-break:break-all}
+  .guarantee{background:var(--dark);color:#e6eee4;border-radius:8px;padding:36px}.guarantee h2{color:#fff}.guarantee p{color:#bfcbbd}
+  details{border-bottom:1px solid var(--line);padding:14px 0} summary{cursor:pointer;font-size:17px;font-weight:600}
+  details p{color:var(--muted);margin-top:8px;font-size:15px}
+  footer{padding:44px 0 60px;border-top:1px solid var(--line);color:var(--muted);font-size:14px;text-align:center}
+  @media (max-width:720px){.grid2,.price-grid{grid-template-columns:1fr}.hero h1{font-size:36px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap"><div class="brand">Launch<b>Guard</b></div></div></header>
+
+<div class="hero"><div class="wrap">
+  <div class="kicker">For Firebase apps built with AI tools</div>
+  <h1>Your AI built the app.<br>Now make it safe to ship.</h1>
+  <p class="lede">AI Studio, Bolt, Lovable, and Cursor will happily generate a working app on top of Firestore rules that let <em>anyone on the internet</em> read, change, or delete your entire database. LaunchGuard is the packet that fixes that: production rules for four app archetypes, the launch checklist, the security self-audit, and the test starter that proves your rules actually hold — in one afternoon.</p>
+  <a class="cta acc" href="#order">Lock it down — $79</a>
+  <p class="muted sans" style="font-size:14px;margin-top:16px">One purchase. No subscription. Plain files you own and can read end to end.</p>
+</div></div>
+
+<section><div class="wrap">
+  <h2>Sound familiar?</h2>
+  <div class="codebox">
+<span class="cm">// the rules your AI shipped with</span><br>
+match /{document=**} {<br>
+&nbsp;&nbsp;allow read, write: <span class="bad">if true;</span> <span class="cm">// ← your whole database, open</span><br>
+}
+  </div>
+  <p style="margin-top:20px">That one block means: no login needed to dump every user record, rewrite any price, promote any account to admin, or delete everything — with a single API call from a browser console. "Test mode" rules expire after 30 days; teams routinely re-open them to keep building and forget. Launch day is not when you want to find out.</p>
+  <p>Locking this down properly is not a one-line change. Owners, roles, field allowlists, server-only status changes, size caps, App Check, backups, claim management — each archetype fails differently. LaunchGuard is that work, done once, written to be adapted in an afternoon.</p>
+</div></section>
+
+<section><div class="wrap">
+  <h2>What’s inside</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3 style="margin-top:0">Production rules — 4 archetypes</h3>
+      <ul>
+        <li><b>SaaS</b> — user-owned docs + owner/member/admin roles via custom claims</li>
+        <li><b>Content app</b> — public-read / user-write posts &amp; comments, moderation flags</li>
+        <li><b>E-commerce</b> — orders with server-only status transitions; customers can't self-refund</li>
+        <li><b>Deny-all migration</b> — the safe path from wide-open rules to locked, without downtime</li>
+        <li>Shared helpers: sign-in/owner/role checks, create-field allowlists, payload size caps</li>
+      </ul>
+      <h3>The checklists</h3>
+      <ul>
+        <li><b>Launch checklist</b> — rules, App Check, auth settings, backups &amp; point-in-time recovery, indexes, quota alerts, monitoring</li>
+        <li><b>Security self-audit</b> — answer, find the hole, jump to the fix in the kit</li>
+        <li><b>The 12 AI-builder holes</b> — the recurring failures in AI-generated Firebase apps, each with its fix</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Proof, not promises</h3>
+      <ul>
+        <li><b>Rules unit-test starter</b> — <span class="mono">@firebase/rules-unit-testing</span> suite with real assertions: owners pass, strangers fail, role escalation blocked</li>
+        <li>Emulator run guide — watch the tests prove it before you deploy</li>
+      </ul>
+      <h3>The guides</h3>
+      <ul>
+        <li><b>App Check</b> — setup for web/Android/iOS and the safe enforcement order</li>
+        <li><b>Custom claims</b> — a commented Admin SDK script for setting roles properly</li>
+        <li><b>Backups</b> — scheduled exports + PITR, so a bad deploy isn't a bad week</li>
+      </ul>
+      <h3>Not for</h3>
+      <ul>
+        <li>Apps not on Firebase/Firestore</li>
+        <li>Anyone wanting a guarantee of "secure" — this is launch-safe patterns + verification, not an audit or legal advice</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<section id="pricing"><div class="wrap">
+  <h2>Pricing — one purchase, forever</h2>
+  <div class="price-grid">
+    <div class="price">
+      <div class="tier">Launch</div>
+      <div class="amount">$79</div>
+      <div class="once">one-time</div>
+      <ul>
+        <li>The complete LaunchGuard v1 packet</li>
+        <li>For <b>one project</b></li>
+        <li>30 days of setup assistance by email</li>
+        <li>v1.x refinements for 12 months</li>
+      </ul>
+      <a class="cta" href="#order">Order Launch</a>
+    </div>
+    <div class="price featured">
+      <div class="tier">Studio</div>
+      <div class="amount">$199</div>
+      <div class="once">one-time</div>
+      <ul>
+        <li>Everything in Launch</li>
+        <li>For <b>up to 5 projects</b> — client work included</li>
+        <li>Priority setup assistance by email</li>
+        <li>v1.x refinements for 12 months</li>
+      </ul>
+      <a class="cta acc" href="#order">Order Studio</a>
+    </div>
+  </div>
+  <div class="ratebar">
+    <span>Live Bitcoin rate: <b id="btc-rate">loading…</b></span>
+    <span>Launch ≈ <b id="btc-79">—</b></span>
+    <span>Studio ≈ <b id="btc-199">—</b></span>
+    <span style="color:#8fa393">Estimates only — your exact amount arrives by email.</span>
+  </div>
+</div></section>
+
+<section id="order"><div class="wrap">
+  <h2>How to order</h2>
+  <p class="muted">LaunchGuard is sold directly, payment by Bitcoin — no accounts, no checkout cart, no platform in the middle. Three steps:</p>
+  <div class="ordersteps">
+    <div class="os"><div class="n">1</div><div>
+      <h4>Email us the tier you want</h4>
+      <p>Write to <span class="addr">shloimyf33107+counterkit@gmail.com</span> with subject <b>“LaunchGuard order”</b> and say which tier — <b>Launch ($79)</b> or <b>Studio ($199)</b>. <a href="mailto:shloimyf33107+counterkit@gmail.com?subject=LaunchGuard%20order">Start your order email →</a></p>
+    </div></div>
+    <div class="os"><div class="n">2</div><div>
+      <h4>Receive your exact amount</h4>
+      <p>You'll receive a reply with your exact BTC amount — calculated at the live rate, unique to your order — and the payment address. Send exactly that amount; it's how your payment is matched to your order.</p>
+    </div></div>
+    <div class="os"><div class="n">3</div><div>
+      <h4>Send, confirm, download</h4>
+      <p>When the payment confirms on-chain, your download (LaunchGuard-v1.zip) arrives by email with the afternoon walkthrough from the README.</p>
+    </div></div>
+  </div>
+  <p class="muted">Replies are typically sent within a few hours. Your quoted amount is held for 24 hours from the reply.</p>
+</div></section>
+
+<section><div class="wrap">
+  <div class="guarantee">
+    <h2>The 14-Day “Safe to Ship” Guarantee</h2>
+    <p>Work through LaunchGuard within fourteen days of purchase. If it does not get your app to launch-safe rules you can test and prove — and we cannot make it right by email — write to us and we will refund you in full.</p>
+    <p>Your users' data is worth more than $79. So is your launch date.</p>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Questions</h2>
+  <details><summary>Which AI builders does this cover?</summary><p>Any Firebase app, however it was written — the holes LaunchGuard fixes are the ones AI Studio, Bolt, Lovable, Cursor, and hand-rolled starter templates most often ship. If your app runs on Firestore, the archetypes adapt.</p></details>
+  <details><summary>I'm not a security expert. Can I actually do this in an afternoon?</summary><p>That's the design target. Pick the archetype closest to your app, adapt the marked sections (names, fields, roles), run the test starter against the emulator, then work the launch checklist top to bottom.</p></details>
+  <details><summary>Does this guarantee my app is secure?</summary><p>No — and distrust anyone who sells that. LaunchGuard gives you production-grade patterns, a self-audit, and tests that prove the rules behave. Your app logic still needs your eyes; the checklist tells you where to point them.</p></details>
+  <details><summary>Can I use it for client work?</summary><p>Yes, on the Studio tier (up to 5 projects). Launch covers one of your own projects.</p></details>
+  <details><summary>How do I pay, and when do I get my download?</summary><p>Payment is by Bitcoin, arranged personally by email (see “How to order”). Once your payment confirms on-chain, the download is emailed to you.</p></details>
+  <details><summary>What is the refund policy?</summary><p>The 14-Day “Safe to Ship” Guarantee above. Refunds are issued in Bitcoin to the address you paid from.</p></details>
+  <p class="muted" style="margin-top:22px">Also from this workshop: <a href="../">CounterKit</a> — the ordering + house-tab system for independent counters.</p>
+</div></section>
+
+<footer><div class="wrap">
+  <p>LaunchGuard — ship like you mean it: locked, tested, backed up.</p>
+  <p>Orders &amp; support: shloimyf33107+counterkit@gmail.com</p>
+</div></footer>
+
+<script>
+(function(){
+  function fmt(n){return n.toFixed(8).replace(/0+$/,'').replace(/\.$/,'');}
+  fetch('https://mempool.space/api/v1/prices')
+    .then(function(r){return r.json();})
+    .then(function(d){
+      var usd=d.USD; if(!usd) throw new Error('no rate');
+      document.getElementById('btc-rate').textContent='$'+usd.toLocaleString('en-US');
+      document.getElementById('btc-79').textContent=fmt(79/usd)+' BTC';
+      document.getElementById('btc-199').textContent=fmt(199/usd)+' BTC';
+    })
+    .catch(function(){document.getElementById('btc-rate').textContent='unavailable right now';});
+})();
+</script>
+</body>
+</html>
