@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Counter Admin — CounterKit</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div style="background:#17140f;color:#f5efe3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.5;padding:10px 16px;text-align:center;">
+    🧪 <strong>SAMPLE DATA — LIVE DEMO.</strong> Admin demo passcode: <code>counter-admin</code>. Everything here is sample data stored in your browser only.
+    &nbsp;·&nbsp;<a href="index.html" style="color:#c9a44a;">Customer page</a>
+    &nbsp;·&nbsp;<a href="../" style="color:#c9a44a;">← Back to CounterKit</a>
+  </div>
+  <header class="topbar">
+    <div><h1 id="businessName">My Counter — Admin</h1></div>
+    <div class="spacer"></div>
+    <span class="badge" id="modeBadge">Loading…</span>
+    <a href="index.html">Customer page →</a>
+    <button class="btn small secondary" id="logoutBtn">Log out</button>
+  </header>
+
+  <!-- Login gate -->
+  <main class="layout" id="gate">
+    <section class="panel" style="max-width:460px;margin:30px auto;">
+      <h2>Counter sign-in</h2>
+      <div id="gateError" class="notice error hidden" role="alert"></div>
+
+      <div id="demoLogin" class="hidden">
+        <p class="help">Demo mode: enter the demo passcode from <code>firebase-config.js</code>
+        (<code>demoAdminPasscode</code>, default <code>counter-admin</code>). This is a preview
+        convenience only — live mode is protected by Firebase Authentication.</p>
+        <label class="field"><span>Demo passcode</span>
+          <input type="password" id="demoPasscode" autocomplete="off" />
+        </label>
+        <button class="btn" id="demoLoginBtn" style="width:100%;">Enter demo admin</button>
+      </div>
+
+      <div id="firebaseLogin" class="hidden">
+        <label class="field"><span>Admin email</span>
+          <input type="email" id="adminEmail" autocomplete="username" />
+        </label>
+        <label class="field"><span>Password</span>
+          <input type="password" id="adminPassword" autocomplete="current-password" />
+        </label>
+        <button class="btn" id="firebaseLoginBtn" style="width:100%;">Sign in</button>
+        <p class="help">Create this user in Firebase Console → Authentication. Only people
+        with this login can open the admin — see README.md, step 4.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Admin app -->
+  <main class="layout hidden" id="adminApp">
+    <div class="stats">
+      <div class="stat"><div class="n" id="statPending">0</div><div class="l">Open orders</div></div>
+      <div class="stat"><div class="n" id="statOrdersToday">0</div><div class="l">Orders today</div></div>
+      <div class="stat"><div class="n" id="statRevenueToday">$0.00</div><div class="l">Revenue today</div></div>
+      <div class="stat"><div class="n" id="statOutstanding">$0.00</div><div class="l">Outstanding tabs</div></div>
+    </div>
+
+    <div class="admin-grid">
+      <section class="panel">
+        <h2>🧾 Live order queue</h2>
+        <div id="orderQueue" aria-live="polite"></div>
+      </section>
+
+      <section class="panel">
+        <h2>👥 Customer tabs &amp; ledger</h2>
+        <div id="customerList"></div>
+      </section>
+
+      <section class="panel">
+        <h2>🍽️ Menu editor</h2>
+        <div id="menuEditorList"></div>
+
+        <h3 id="menuFormTitle">Add a menu item</h3>
+        <div id="menuFormError" class="notice error hidden" role="alert"></div>
+        <form id="menuForm">
+          <input type="hidden" id="menuItemId" />
+          <label class="field"><span>Name</span><input type="text" id="miName" required placeholder="Iced Coffee" /></label>
+          <label class="field"><span>Price ($)</span><input type="number" id="miPrice" min="0" step="0.01" required placeholder="4.00" /></label>
+          <label class="field"><span>Category</span><input type="text" id="miCategory" placeholder="Drinks" /></label>
+          <label class="field"><span>Sort order <span class="help">(lower shows first)</span></span><input type="number" id="miSort" placeholder="10" /></label>
+          <label class="field"><span>Description</span><input type="text" id="miDesc" placeholder="Cold, strong, ready fast." /></label>
+          <label class="field"><span>Add-ons <span class="help">(format: Name:price, comma-separated)</span></span>
+            <input type="text" id="miAddOns" placeholder="Oat Milk:1.00, Extra Shot:1.00" /></label>
+          <label class="field"><span><input type="checkbox" id="miAvailable" checked style="width:auto;" /> Available on the customer menu</span></label>
+          <div class="row-between">
+            <button class="btn" type="submit">Save menu item</button>
+            <button class="btn secondary" type="button" id="clearMenuFormBtn">Clear form</button>
+          </div>
+        </form>
+
+        <div id="demoTools" class="hidden" style="margin-top:22px;">
+          <h3>Demo tools</h3>
+          <p class="help">Demo data lives in this browser's localStorage.</p>
+          <button class="btn secondary small" id="resetDemoBtn">Reset demo data</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site">CounterKit v1 — Admin</footer>
+  <script type="module" src="admin.js"></script>
+</body>
+</html>
