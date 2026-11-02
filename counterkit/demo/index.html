@@ -8,8 +8,9 @@
 </head>
 <body>
   <div style="background:#17140f;color:#f5efe3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.5;padding:10px 16px;text-align:center;">
-    🧪 <strong>SAMPLE DATA — LIVE DEMO.</strong> This is CounterKit running with sample data in your browser only. Place an order, then open the
+    🧪 <strong>SAMPLE DATA — LIVE DEMO.</strong> Place an order, then open the
     <a href="admin.html" style="color:#c9a44a;">counter admin</a> to see it land in the queue and on a house tab.
+    <br><strong style="color:#e8b4b4;">⚠️ IMPORTANT — USE ONE BROWSER ON ONE DEVICE for the whole demo:</strong> sample data lives only inside this browser on this device. It does <u>not</u> sync between your phone and your computer — if you order here and open the admin on a different device, the queue will look empty and the demo will seem broken. It isn't; the data is simply on the first device. (The real, paid CounterKit runs on Firebase and syncs everywhere — this limit is only in the free demo.)
     &nbsp;·&nbsp;<a href="../" style="color:#c9a44a;">← Back to CounterKit</a>
   </div>
   <header class="topbar">
@@ -25,8 +26,9 @@
   <main class="layout">
     <div id="demoNotice" class="notice warn hidden">
       <strong>Demo mode:</strong> no Firebase config was found, so this preview runs on
-      sample data stored in this browser only. Add your Firebase config to
-      <code>firebase-config.js</code> to go live — see README.md.
+      sample data stored in <strong>this browser, on this device, only</strong> — it does not
+      sync to your other devices. Keep the whole demo in this one browser. Add your Firebase
+      config to <code>firebase-config.js</code> to go live (live mode syncs across devices) — see README.md.
     </div>
 
     <!-- Shopping view -->
