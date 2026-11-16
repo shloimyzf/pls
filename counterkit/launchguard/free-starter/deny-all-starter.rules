@@ -1,0 +1,145 @@
+// =============================================================================
+// LaunchGuard — Archetype (d): Deny-all starter + migration path
+// =============================================================================
+// Use this when:
+//   - Your rules are currently open (`allow read, write: if true`) or in
+//     test mode with an expiry date that is about to lock you out anyway, AND
+//   - You don't yet know which archetype fits, or your app's data model
+//     doesn't match (a)/(b)/(c) yet, AND
+//   - You need the bleeding stopped TODAY without breaking your ability
+//     to keep developing.
+//
+// This file denies EVERYTHING from clients. Your app will stop working
+// for real users until you open collections back up — deliberately, one
+// at a time, using the migration path at the bottom of this file. That
+// breakage is the point of the emergency version (STEP 0). If you cannot
+// afford downtime, skip straight to STEP 1 (authenticated-only holding
+// pattern) during a maintenance window.
+//
+// WHY NOT JUST "allow read, write: if request.auth != null"?
+// Because every AI-built app lets anyone create an account — or enables
+// anonymous auth. "Signed in" is not "authorised". It stops scanners and
+// casual drive-bys only. Treat that pattern as a tourniquet, not a cure.
+// =============================================================================
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ------------------------------------------------------------------
+    // Shared helper functions (kept identical to the other archetypes,
+    // so migrating means pasting match blocks, not re-learning helpers)
+    // ------------------------------------------------------------------
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function hasRole(role) {
+      return isSignedIn() && request.auth.token.role == role;
+    }
+
+    function isAdmin() {
+      return hasRole('admin');
+    }
+
+    function incomingKeys() {
+      return request.resource.data.keys();
+    }
+
+    function isValidCreate(requiredFields, allowedFields) {
+      return incomingKeys().hasAll(requiredFields)
+        && incomingKeys().hasOnly(allowedFields);
+    }
+
+    function onlyUpdatesFields(allowedFields) {
+      return request.resource.data.diff(resource.data)
+               .affectedKeys().hasOnly(allowedFields);
+    }
+
+    function isBoundedString(field, maxLen) {
+      return field in request.resource.data
+        && request.resource.data[field] is string
+        && request.resource.data[field].size() > 0
+        && request.resource.data[field].size() <= maxLen;
+    }
+
+    function isServerTime(field) {
+      return request.resource.data[field] == request.time;
+    }
+
+    // ==================================================================
+    // STEP 0 — EMERGENCY LOCKDOWN (active right now)
+    // Everything below this line denies all client access. The Admin
+    // SDK (Cloud Functions, your server, the Firebase console) bypasses
+    // rules entirely, so your backend and your own console access keep
+    // working while clients are locked out.
+    // ==================================================================
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // ==================================================================
+    // MIGRATION PATH — from deny-all to production, in order.
+    // Work these steps in the Firestore emulator + rules playground
+    // FIRST (see testing/RUN.md), deploy after each step, and watch
+    // Firebase Console -> Firestore -> Usage/Monitor for denied-request
+    // spikes that tell you a legitimate flow is still closed.
+    //
+    // STEP 1 — Tourniquet (only if you need the app live during work):
+    //   Change the catch-all above TEMPORARILY to:
+    //       allow read, write: if request.auth != null;
+    //   Set a calendar deadline (days, not weeks) to reach Step 3.
+    //   Disable anonymous sign-in in Firebase Auth NOW if your app
+    //   doesn't intentionally use it — otherwise the tourniquet is theatre.
+    //
+    // STEP 2 — Inventory (no rules change):
+    //   List every collection your app actually uses:
+    //       grep -R "collection(" src/ | sort -u
+    //   For each collection write down: who must read it, who must
+    //   write it, which fields a client may set, which fields must be
+    //   server-only. checklists/SECURITY-AUDIT.md walks you through it.
+    //
+    // STEP 3 — Open collection by collection:
+    //   For each collection, paste the closest match block from
+    //   archetype (a), (b), or (c), adapt names/fields, and place it
+    //   ABOVE the catch-all. Firestore evaluates all matching rules —
+    //   a specific allow plus the catch-all deny results in allow ONLY
+    //   for what the specific block grants.
+    //   Worked starter — the most common first block, a private
+    //   per-user document. Uncomment and adapt:
+    //
+    //   match /users/{userId} {
+    //     allow get: if isOwner(userId) || isAdmin();
+    //     allow list: if false;
+    //     allow create: if isOwner(userId)
+    //       && isValidCreate(['createdAt'], ['displayName', 'createdAt'])
+    //       && isServerTime('createdAt');
+    //     allow update: if isOwner(userId)
+    //       && onlyUpdatesFields(['displayName', 'updatedAt'])
+    //       && isServerTime('updatedAt');
+    //     allow delete: if false;
+    //   }
+    //
+    // STEP 4 — Prove each opening:
+    //   Add a test per collection to testing/rules.test.mjs: owner can,
+    //   stranger can't, signed-out can't, forbidden-field write can't.
+    //   Green suite before every deploy.
+    //
+    // STEP 5 — Retire the tourniquet:
+    //   When every live collection has its own block, the catch-all
+    //   must read `if false` (as shipped). Confirm in the console's
+    //   Rules Playground with an unauthenticated request against a
+    //   collection you did NOT open: result must be DENIED.
+    //
+    // STEP 6 — Finish the launch surface:
+    //   Work checklists/LAUNCH-CHECKLIST.md (App Check, auth settings,
+    //   backups/PITR, budget alerts, monitoring). Rules were the
+    //   emergency; the checklist is the launch.
+    // ==================================================================
+  }
+}
