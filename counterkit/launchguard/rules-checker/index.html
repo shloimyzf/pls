@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Firebase Rules Checker — paste your rules, see the holes in 10 seconds</title>
+<meta name="description" content="Free: paste your Firestore rules and this page flags the holes AI-built Firebase apps ship with most — open rules, auth-only checks, roles in user docs, client-set prices. Runs entirely in your browser. Nothing is uploaded.">
+<link rel="canonical" href="https://shloimyzf.github.io/pls/counterkit/launchguard/rules-checker/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="LaunchGuard">
+<meta property="og:title" content="Firebase Rules Checker — paste your rules, see the holes in 10 seconds">
+<meta property="og:description" content="Free heuristic scan for the 12 holes AI-built Firebase apps ship with. Runs entirely in your browser — nothing is uploaded.">
+<meta property="og:url" content="https://shloimyzf.github.io/pls/counterkit/launchguard/rules-checker/">
+<meta property="og:image" content="https://shloimyzf.github.io/pls/counterkit/launchguard/assets/og-image.svg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://shloimyzf.github.io/pls/counterkit/launchguard/assets/og-image.svg">
+<style>
+  :root{--ink:#101511;--paper:#f4f6f3;--card:#ffffff;--acc:#2e7d4f;--acc-soft:#3fa46a;--muted:#55645a;--line:#dce3dc;--dark:#0d1410;--dark2:#16211a;--bad:#b3402e;--bad-bg:#fbeeea;--ok-bg:#e7f2ea;--warn-bg:#fdf6e3;--warn:#8a6d1b}
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;font-family:Georgia,'Times New Roman',serif;background:var(--paper);color:var(--ink);line-height:1.6}
+  .sans{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif}
+  .mono{font-family:ui-monospace,Menlo,Consolas,monospace}
+  a{color:var(--acc)} .wrap{max-width:920px;margin:0 auto;padding:0 22px}
+  header.top{border-bottom:1px solid var(--line);padding:18px 0}
+  .brand{font-size:20px;letter-spacing:.14em;text-transform:uppercase}.brand b{color:var(--acc)}
+  .hero{padding:64px 0 40px;text-align:center}
+  .hero .kicker{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--acc);margin-bottom:18px}
+  .hero h1{font-size:44px;line-height:1.15;margin:0 0 20px;font-weight:500}
+  .hero p.lede{font-size:19px;color:var(--muted);max-width:700px;margin:0 auto 30px}
+  section{padding:48px 0;border-top:1px solid var(--line)}
+  h2{font-size:30px;font-weight:500;margin:0 0 16px;line-height:1.25} h3{font-size:20px;font-weight:600;margin:26px 0 8px}
+  p{margin:0 0 14px}.muted{color:var(--muted)} ul,ol{margin:0 0 14px;padding-left:20px} li{margin-bottom:7px}
+  textarea{width:100%;min-height:340px;border:1px solid var(--line);border-radius:8px;padding:18px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13.5px;line-height:1.6;background:var(--card);color:var(--ink);resize:vertical}
+  textarea:focus{outline:2px solid var(--acc);outline-offset:1px}
+  .btnrow{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
+  .cta{display:inline-block;background:var(--dark);color:#eef3ee;text-decoration:none;padding:14px 30px;border-radius:3px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:15px;letter-spacing:.06em;border:0;cursor:pointer}
+  .cta:hover{background:var(--dark2)} .cta.acc{background:var(--acc);color:#fff}.cta.acc:hover{background:var(--acc-soft)}
+  .cta.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+  .cta.ghost:hover{background:#e9efe9}
+  .verdict{border-radius:8px;padding:22px 26px;margin:0 0 14px;border:1px solid var(--line);background:var(--card)}
+  .verdict.found{background:var(--bad-bg);border-color:#eec5bd}
+  .verdict.ok{background:var(--ok-bg);border-color:#bcd8c3}
+  .verdict.unknown{background:var(--warn-bg);border-color:#e8d9a8}
+  .verdict .tag{display:inline-block;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:3px 9px;border-radius:3px;margin-bottom:8px}
+  .verdict.found .tag{background:var(--bad);color:#fff}
+  .verdict.ok .tag{background:var(--acc);color:#fff}
+  .verdict.unknown .tag{background:var(--warn);color:#fff}
+  .verdict h3{margin:0 0 4px}
+  .verdict p{margin:0;font-size:15px}
+  .verdict p.fix{margin-top:8px;color:var(--muted)}
+  .score{border-radius:8px;padding:28px 30px;margin-bottom:22px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif}
+  .score.bad{background:var(--bad-bg);border:1px solid #eec5bd}
+  .score.good{background:var(--ok-bg);border:1px solid #bcd8c3}
+  .score h2{margin:0 0 6px}.score p{margin:0}
+  .upsell{background:var(--dark);color:#e6eee4;border-radius:8px;padding:36px}.upsell h2{color:#fff}.upsell p{color:#bfcbbd}.upsell a{color:#8fd0a8}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:26px}
+  .card h3{margin-top:0}
+  footer{padding:44px 0 60px;border-top:1px solid var(--line);color:var(--muted);font-size:14px;text-align:center}
+  @media (max-width:720px){.grid2{grid-template-columns:1fr}.hero h1{font-size:34px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap"><div class="brand">Launch<b>Guard</b> <span class="sans" style="font-size:13px;letter-spacing:.1em;color:var(--muted)">· RULES CHECKER</span></div></div></header>
+
+<div class="hero"><div class="wrap">
+  <div class="kicker">Free — no email, no account, nothing uploaded</div>
+  <h1>Paste your rules.<br>See the holes in 10 seconds.</h1>
+  <p class="lede">Your AI builder optimised for &ldquo;the demo works&rdquo;, not for safe. Paste your <span class="mono">firestore.rules</span> below and this page flags the patterns AI-built apps ship with most — open rules, &ldquo;signed in&rdquo; treated as &ldquo;authorised&rdquo;, roles in user docs, client-set prices. It runs entirely in your browser: your rules never leave your machine.</p>
+</div></div>
+
+<section><div class="wrap">
+  <h2>Your rules</h2>
+  <p class="muted">Paste the full contents of <span class="mono">firestore.rules</span>. If you also have <span class="mono">storage.rules</span>, paste it underneath — the checker reads both. No account, no upload, no storage: closing this tab forgets everything.</p>
+  <textarea id="rules" spellcheck="false" placeholder="rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    ...
+  }
+}"></textarea>
+  <div class="btnrow">
+    <button class="cta acc" id="checkBtn" type="button">Check my rules →</button>
+    <button class="cta ghost" id="sampleBtn" type="button">Try a sample (vulnerable rules)</button>
+    <button class="cta ghost" id="clearBtn" type="button">Clear</button>
+  </div>
+  <p class="muted sans" style="font-size:13px;margin-top:14px">A heuristic scan, not an audit. It catches the patterns AI builders ship most; a clean result does not prove your rules are safe. When in doubt, work the <a href="../free-starter/">launch checklist</a>.</p>
+</div></section>
+
+<section id="results" style="display:none"><div class="wrap">
+  <div id="scoreBox" class="score"></div>
+  <div id="verdicts"></div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>What it checks</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>Detectable from your rules text</h3>
+      <ul>
+        <li><b>1 · Open rules</b> — <span class="mono">allow read, write: if true</span>, and test-mode rules with a 30-day fuse</li>
+        <li><b>2 · &ldquo;Signed in&rdquo; as &ldquo;authorised&rdquo;</b> — <span class="mono">request.auth != null</span> with no ownership or role check behind it</li>
+        <li><b>3 · Roles in user docs</b> — a rule trusting <span class="mono">.data.role</span> from a Firestore document</li>
+        <li><b>4 · No field validation</b> — write allows with no <span class="mono">hasOnly / hasAll</span> allowlist anywhere</li>
+        <li><b>5 · Client-set IDs &amp; timestamps</b> — <span class="mono">ownerId / authorId / createdAt</span> accepted without <span class="mono">== request.auth.uid</span> / <span class="mono">== request.time</span></li>
+        <li><b>6 · Orders writable by clients</b> — an orders block clients can update (where <span class="mono">status: &ldquo;paid&rdquo;</span> would live)</li>
+        <li><b>7 · Client-supplied prices</b> — <span class="mono">price / total</span> mentioned in rules instead of recomputed server-side</li>
+        <li><b>8 · Storage wide open</b> — only when you paste <span class="mono">storage.rules</span> too</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Not detectable from rules text</h3>
+      <p>These three holes live outside the rules file, so the checker can only point you at them:</p>
+      <ul>
+        <li><b>9 · No App Check</b> — your API is everyone&rsquo;s API without it</li>
+        <li><b>10 · Secrets in the client or repo</b> — grep your bundle and your git history for service-account keys</li>
+        <li><b>11 · No backups, alerts, or monitoring</b> — the first incident becomes unrecoverable without them</li>
+      </ul>
+      <p>All three are in the <a href="../free-starter/">free starter&rsquo;s launch checklist</a>. Two good signs the checker also reports: a catch-all deny (<span class="mono">if false</span>) and real ownership checks (<span class="mono">request.auth.uid ==</span>).</p>
+    </div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="upsell">
+    <h2>Found holes? Fix them this afternoon.</h2>
+    <p>Start free: the <a href="../free-starter/">LaunchGuard Free Starter</a> gives you the deny-all lockdown rules, the full 12-holes write-up, and the launch checklist — no email, no account. The full <a href="../">LaunchGuard packet ($79 / $199)</a> adds production rules for all four app archetypes, the 40-question security self-audit, the rules unit-test starter, and the App Check / custom-claims / backups guides.</p>
+    <p><a href="../free-starter/">Get the free starter →</a> &nbsp;·&nbsp; <a href="../">See the full LaunchGuard packet →</a></p>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <p>LaunchGuard Rules Checker — free for your own projects; not for resale or redistribution. A heuristic scan, not a security audit.</p>
+  <p><a href="../">LaunchGuard</a> · <a href="../free-starter/">Free Starter</a> · <a href="../../">CounterKit</a> · Orders &amp; support: shloimyf33107+counterkit@gmail.com</p>
+</div></footer>
+
+<script>
+(function(){
+  var SAMPLE = [
+"rules_version = '2';",
+"service cloud.firestore {",
+"  match /databases/{database}/documents {",
+"    match /users/{userId} {",
+"      allow read, write: if request.auth != null;",
+"    }",
+"    match /posts/{postId} {",
+"      allow read: if true;",
+"      allow create: if request.auth != null",
+"        && request.resource.data.authorId is string",
+"        && request.resource.data.createdAt is timestamp;",
+"      allow update, delete: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';",
+"    }",
+"    match /orders/{orderId} {",
+"      allow read: if request.auth != null;",
+"      allow create: if request.auth != null",
+"        && request.resource.data.total > 0;",
+"      allow update: if request.auth != null;",
+"    }",
+"    match /{document=**} {",
+"      allow read, write: if true;",
+"    }",
+"  }",
+"}"
+  ].join("\n");
+
+  function has(t, re){ return re.test(t); }
+  function el(id){ return document.getElementById(id); }
+
+  function checks(t){
+    var authOnly = has(t, /request\.auth\s*!=\s*null/) && !has(t, /request\.auth\.uid\s*==/) && !has(t, /request\.auth\.token\./);
+    var writeAllows = has(t, /allow\s+(read\s*,\s*)?write|allow\s+(create|update)/);
+    var fieldValidated = has(t, /hasOnly\s*\(/) || has(t, /hasAll\s*\(/) || has(t, /\.keys\(\)/);
+    var ordersBlock = has(t, /match\s+\/orders\//) || has(t, /match\s+\/payments\//);
+    var ordersRestricted = has(t, /hasRole\s*\(\s*['"]admin['"]\s*\)/) || has(t, /request\.auth\.token\.role\s*==\s*['"]admin['"]/);
+    var storageSection = has(t, /firebase\.storage/);
+    var storageOpen = storageSection && (has(t, /allow\s+read\s*,\s*write\s*:\s*if\s+true/) || (has(t, /allow\s+read\s*,\s*write\s*:\s*if\s+request\.auth\s*!=\s*null/)));
+    return [
+      { n: 1, name: "Open rules", sev: "critical",
+        found: has(t, /if\s+true\b/),
+        what: "A rule grants access <span class=\"mono\">if true</span> — anyone on the internet can read, change, or delete everything it covers, no login needed.",
+        fix: "Deploy the deny-all starter from the <a href=\"../free-starter/\">Free Starter</a> today, then open collections back up one at a time." },
+      { n: 2, name: "Test-mode rules with a fuse", sev: "critical",
+        found: has(t, /timestamp\.date\s*\(/) || has(t, /request\.time\s*</),
+        what: "Test-mode rules expire after 30 days — teams routinely re-open them to keep building and forget.",
+        fix: "Replace with a real archetype; treat the expiry as a deadline, not a safety net." },
+      { n: 3, name: "\u201cSigned in\u201d treated as \u201cauthorised\u201d", sev: "high",
+        found: authOnly,
+        what: "<span class=\"mono\">request.auth != null</span> checks that a user exists, not whose data they touch. Any account can read or edit any document by ID.",
+        fix: "Ownership + role checks on every block — <span class=\"mono\">isOwner()</span>, <span class=\"mono\">hasRole()</span> — on every collection, not just the sensitive ones." },
+      { n: 4, name: "Roles stored in Firestore documents", sev: "high",
+        found: has(t, /\.data\.role\b/) || has(t, /resource\.data\.role\b/),
+        what: "A rule trusts a <span class=\"mono\">role</span> field from a user document — and the user document is user-writable. One console write promotes any account to admin.",
+        fix: "Roles live in custom claims, set only via the Admin SDK. Remove role/plan fields from every client write allowlist." },
+      { n: 5, name: "No field validation", sev: "high",
+        found: writeAllows && !fieldValidated,
+        what: "Write allows exist but no <span class=\"mono\">hasOnly / hasAll</span> allowlist appears anywhere — clients can add <span class=\"mono\">credits: 999999</span>, <span class=\"mono\">plan: \u201centerprise\u201d</span>, or a 10&nbsp;MB string.",
+        fix: "Field allowlists + type/size caps on every create/update — see the archetypes in the full LaunchGuard packet." },
+      { n: 6, name: "Client-set ownership fields and timestamps", sev: "high",
+        found: (has(t, /\b(ownerId|authorId|customerId)\b/) && !has(t, /request\.auth\.uid\s*==/)) || (has(t, /\b(createdAt|updatedAt)\b/) && !has(t, /==\s*request\.time/)),
+        what: "Ownership fields or timestamps are taken from the client without being pinned to <span class=\"mono\">request.auth.uid</span> / <span class=\"mono\">request.time</span> — a forged authorId frames another user; backdated content wins ordering.",
+        fix: "Require <span class=\"mono\">field == request.auth.uid</span> for ownership fields and <span class=\"mono\">field == request.time</span> for timestamps." },
+      { n: 7, name: "Orders writable by clients", sev: "high",
+        found: ordersBlock && !ordersRestricted,
+        what: "An orders/payments block lets clients update documents without an admin-only gate — that is where <span class=\"mono\">status: \u201cpaid\u201d</span> lives. Skip the payment step, write <span class=\"mono\">paid</span> from the console, receive goods.",
+        fix: "Orders are born <span class=\"mono\">pending</span>; <span class=\"mono\">paid</span> / <span class=\"mono\">refunded</span> are Admin-SDK-only transitions after server-side verification." },
+      { n: 8, name: "Client-supplied prices and totals", sev: "high",
+        found: has(t, /\b(price|total)\b/) && !has(t, /recomput/i),
+        what: "Your rules mention <span class=\"mono\">price</span> or <span class=\"mono\">total</span> — if the cart or order doc carries the price the client wrote, editing the total to $0.01 before checkout is one console write away. (Heuristic — confirm by hand: does your server recompute totals from /products?)",
+        fix: "No price in the cart; the server recomputes totals from <span class=\"mono\">/products</span> at checkout, in integer cents." },
+      { n: 9, name: "Storage left wide open", sev: "high",
+        found: storageOpen,
+        what: "Your pasted storage rules grant broad access — free anonymous file hosting on your bucket, or a full listing of users&rsquo; private files.",
+        fix: "Per-user Storage paths with owner checks + size/type limits — never the scaffold default." },
+      { n: 10, name: "Catch-all deny present", sev: "good",
+        found: has(t, /allow\s+read\s*,\s*write\s*:\s*if\s+false/),
+        what: "A catch-all <span class=\"mono\">allow read, write: if false</span> is present — the deny-all posture. Good: anything you forgot to open stays closed.",
+        fix: "Keep it last, and prove each opening with a test before deploy." },
+      { n: 11, name: "Real ownership checks present", sev: "good",
+        found: has(t, /request\.auth\.uid\s*==/),
+        what: "<span class=\"mono\">request.auth.uid ==</span> comparisons are present — rules are checking whose data is touched, not just that someone is signed in.",
+        fix: "Make sure every collection has one, not just the sensitive ones." }
+    ];
+  }
+
+  function run(){
+    var t = el("rules").value;
+    var box = el("results"), score = el("scoreBox"), list = el("verdicts");
+    if (!t.trim()) {
+      box.style.display = "block";
+      score.className = "score bad";
+      score.innerHTML = "<h2>Nothing to check yet</h2><p>Paste your <span class=\"mono\">firestore.rules</span> above — or hit \u201cTry a sample\u201d to see the checker work on deliberately vulnerable rules.</p>";
+      list.innerHTML = "";
+      box.scrollIntoView({behavior: "smooth"});
+      return;
+    }
+    var res = checks(t);
+    var bad = res.filter(function(r){ return r.found && (r.sev === "critical" || r.sev === "high"); });
+    var good = res.filter(function(r){ return r.found && r.sev === "good"; });
+    var total = bad.length;
+    score.className = "score " + (total === 0 ? "good" : "bad");
+    score.innerHTML = total === 0
+      ? "<h2>0 holes found in this scan \u2014 nice.</h2><p>None of the 9 detectable patterns showed up. That is not proof your rules are safe — App Check, secrets, and backups can&rsquo;t be seen from rules text (below) — but it&rsquo;s a genuinely good sign. Keep the catch-all deny and prove each opening with tests.</p>"
+      : "<h2>" + total + " hole" + (total === 1 ? "" : "s") + " found" + (good.length ? " &middot; " + good.length + " good sign" + (good.length === 1 ? "" : "s") + " too" : "") + "</h2><p>Each one below is a pattern AI-built apps ship with most, with its fix. Start with the critical ones — an open database is worse than a paused one.</p>";
+    var html = "";
+    res.forEach(function(r){
+      if (r.sev === "good") {
+        html += "<div class=\"verdict " + (r.found ? "ok" : "unknown") + "\"><span class=\"tag\">" + (r.found ? "Good sign" : "Missing") + "</span><h3>" + r.n + " · " + r.name + "</h3><p>" + r.what + "</p><p class=\"fix\">" + r.fix + "</p></div>";
+      } else if (r.found) {
+        html += "<div class=\"verdict found\"><span class=\"tag\">" + r.sev + " · Hole " + r.n + "</span><h3>" + r.name + "</h3><p>" + r.what + "</p><p class=\"fix\"><b>Fix:</b> " + r.fix + "</p></div>";
+      } else {
+        html += "<div class=\"verdict ok\"><span class=\"tag\">Not found</span><h3>" + r.n + " · " + r.name + "</h3><p>No sign of this pattern in the pasted rules. (Heuristic — a clean scan here doesn&rsquo;t prove the hole is closed.)</p></div>";
+      }
+    });
+    html += "<div class=\"verdict unknown\"><span class=\"tag\">Can&rsquo;t tell from rules text</span><h3>App Check · Secrets in the client · Backups &amp; alerts</h3><p>Three of the twelve holes live outside the rules file: without App Check your API is everyone&rsquo;s API; a service-account key in the bundle or repo is total database control; without backups and billing alerts the first incident becomes unrecoverable. Work them from the <a href=\"../free-starter/\">free starter&rsquo;s launch checklist</a>.</p></div>";
+    list.innerHTML = html;
+    box.style.display = "block";
+    box.scrollIntoView({behavior: "smooth"});
+  }
+
+  el("checkBtn").addEventListener("click", run);
+  el("sampleBtn").addEventListener("click", function(){ el("rules").value = SAMPLE; run(); });
+  el("clearBtn").addEventListener("click", function(){ el("rules").value = ""; el("results").style.display = "none"; el("rules").focus(); });
+})();
+</script>
+</body>
+</html>
